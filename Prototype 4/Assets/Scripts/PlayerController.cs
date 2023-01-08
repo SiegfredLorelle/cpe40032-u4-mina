@@ -6,11 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
     private GameObject focalPoint;
-    public GameObject powerupIndicator;
+    public GameObject KnockbackIndicator;
+    public GameObject RocketsIndicator;
 
     public float speed = 5.0f;
-    public bool hasPowerup = false;
+    public bool hasKnockbackPowerup = false;
     private float powerupStrength = 50.0f;
+    public bool hasRocketsPowerup = false;
 
     private IEnumerator powerupCooldown;
 
@@ -27,12 +29,15 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical"); 
         playerRb.AddForce(focalPoint.transform.forward * verticalInput * speed);
 
-        powerupIndicator.transform.position =  transform.position - new Vector3 (0, 0.7f, 0);
+        Vector3 indicatorLocation = transform.position - new Vector3(0, 0.7f, 0);
+        KnockbackIndicator.transform.position = indicatorLocation;
+        RocketsIndicator.transform.position = indicatorLocation;
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Powerup"))
+        if (other.CompareTag("Knockback Powerup") || other.CompareTag("Rockets Powerup"))
         {
 
             if (powerupCooldown != null)
@@ -42,33 +47,49 @@ public class PlayerController : MonoBehaviour
 
             powerupCooldown = PowerupCountdownRoutine();
             StartCoroutine(powerupCooldown);
-            
-            
-            hasPowerup = true;
-            powerupIndicator.gameObject.SetActive(true);
 
+            if (other.CompareTag("Knockback Powerup"))
+            { 
+                hasKnockbackPowerup = true;
+                KnockbackIndicator.gameObject.SetActive(true);
+            }
+
+            else if (other.CompareTag("Rockets Powerup"))
+            {
+                hasRocketsPowerup = true;
+                RocketsIndicator.gameObject.SetActive(true);
+            }
 
             Destroy(other.gameObject);
 
         }
+
+        
     }
 
     IEnumerator PowerupCountdownRoutine()
     {
         yield return new WaitForSeconds(7.0f);
-        hasPowerup = false;
-        powerupIndicator.gameObject.SetActive(false);
+        hasKnockbackPowerup = false;
+        hasRocketsPowerup = false;
+        KnockbackIndicator.gameObject.SetActive(false);
+        RocketsIndicator.gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && hasPowerup)
+        if (collision.gameObject.CompareTag("Enemy") && hasKnockbackPowerup)
         {
             Rigidbody enemyRb = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 awayFromPlayer = collision.gameObject.transform.position - transform.position;
 
             enemyRb.AddForce(awayFromPlayer * powerupStrength, ForceMode.Impulse);
-            Debug.Log($"Collided with: {collision.gameObject.name} and with powerup set to {hasPowerup}");
         }
+
+
+    }
+
+    private void UnleashHomingRockets()
+    { 
     }
 }
