@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 5.0f;
     public bool hasPowerup = false;
-    private float powerupStrength = 15.0f;
+    private float powerupStrength = 20.0f;
 
     // Start is called before the first frame update
     void Start()
