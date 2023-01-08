@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour
 
         if (enemyCount == 0)
         {
-            waveNumber++;
+            //waveNumber++;
             SpawnEmemyWave(waveNumber);
             Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation);
 
