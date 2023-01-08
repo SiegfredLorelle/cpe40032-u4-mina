@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 5.0f;
     public bool hasPowerup = false;
-    private float powerupStrength = 20.0f;
+    private float powerupStrength = 50.0f;
 
     private IEnumerator powerupCooldown;
 
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
             hasPowerup = true;
             powerupIndicator.gameObject.SetActive(true);
 
+
             Destroy(other.gameObject);
 
         }
@@ -54,7 +55,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator PowerupCountdownRoutine()
     {
-
         yield return new WaitForSeconds(7.0f);
         hasPowerup = false;
         powerupIndicator.gameObject.SetActive(false);
