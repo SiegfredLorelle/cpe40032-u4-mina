@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    //public GameObject enemyPrefab;
+    public PlayerController playerControllerScript;
+
     public GameObject[] enemiesPrefab;
     public GameObject[] powerupsPrefab;
-    float spawnRange = 9.0f;
+    //public GameObject rocket;
+    private float spawnRange = 9.0f;
+    public Enemy[] enemiesAlive;
     public int enemyCount;
     public int waveNumber = 1;
+
 
     // Start is called before the first frame update
     void Start()
     {
         SpawnEmemyWave(waveNumber);
         SpawnPowerUp();
+
+        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemyCount = FindObjectsOfType<Enemy>().Length;
+        enemiesAlive = FindObjectsOfType<Enemy>();
+        enemyCount = enemiesAlive.Length;
 
         if (enemyCount == 0)
         {
@@ -30,6 +37,7 @@ public class SpawnManager : MonoBehaviour
             SpawnPowerUp();
 
         }
+
     }
 
     // Spawn a wave of enemies
@@ -57,5 +65,7 @@ public class SpawnManager : MonoBehaviour
         int randomPowerupIndex = Random.Range(0, powerupsPrefab.Length);
         Instantiate(powerupsPrefab[randomPowerupIndex], GenerateSpawnPosition(), powerupsPrefab[randomPowerupIndex].transform.rotation);
     }
+
+
 }
 

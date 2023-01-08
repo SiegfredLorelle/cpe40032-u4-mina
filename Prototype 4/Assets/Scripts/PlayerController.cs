@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private SpawnManager spawnManagerScript;
+
     private Rigidbody playerRb;
     private GameObject focalPoint;
-    public GameObject KnockbackIndicator;
-    public GameObject RocketsIndicator;
+    public GameObject knockbackIndicator;
+    public GameObject rocketsIndicator;
+    public GameObject rocket;
+
 
     public float speed = 5.0f;
     public bool hasKnockbackPowerup = false;
@@ -19,6 +23,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spawnManagerScript = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         playerRb = GetComponent<Rigidbody>();
         focalPoint = GameObject.Find("Focal Point");
     }
@@ -30,8 +35,8 @@ public class PlayerController : MonoBehaviour
         playerRb.AddForce(focalPoint.transform.forward * verticalInput * speed);
 
         Vector3 indicatorLocation = transform.position - new Vector3(0, 0.7f, 0);
-        KnockbackIndicator.transform.position = indicatorLocation;
-        RocketsIndicator.transform.position = indicatorLocation;
+        knockbackIndicator.transform.position = indicatorLocation;
+        rocketsIndicator.transform.position = indicatorLocation;
     }
 
 
@@ -51,13 +56,14 @@ public class PlayerController : MonoBehaviour
             if (other.CompareTag("Knockback Powerup"))
             { 
                 hasKnockbackPowerup = true;
-                KnockbackIndicator.gameObject.SetActive(true);
+                knockbackIndicator.gameObject.SetActive(true);
             }
 
             else if (other.CompareTag("Rockets Powerup"))
             {
                 hasRocketsPowerup = true;
-                RocketsIndicator.gameObject.SetActive(true);
+                rocketsIndicator.gameObject.SetActive(true);
+                SpawnRockets();
             }
 
             Destroy(other.gameObject);
@@ -72,8 +78,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(7.0f);
         hasKnockbackPowerup = false;
         hasRocketsPowerup = false;
-        KnockbackIndicator.gameObject.SetActive(false);
-        RocketsIndicator.gameObject.SetActive(false);
+        knockbackIndicator.gameObject.SetActive(false);
+        rocketsIndicator.gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -89,7 +95,20 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void UnleashHomingRockets()
-    { 
+
+    private void SpawnRockets()
+    {
+        {
+            for (int i = 0; i < spawnManagerScript.enemyCount; i++)
+            {
+                Debug.Log(spawnManagerScript.enemiesAlive[i].transform.position);
+                GameObject rocketProjectile = Instantiate(rocket, transform.position, rocket.transform.rotation);
+                Rigidbody rocketRb = rocketProjectile.GetComponent<Rigidbody>();
+                rocketRb.AddForce((spawnManagerScript.enemiesAlive[i].transform.position - transform.position).normalized * 500);
+            }
+        }
     }
+
+
+
 }
