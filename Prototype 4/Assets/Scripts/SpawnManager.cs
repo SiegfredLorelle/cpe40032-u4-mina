@@ -11,7 +11,6 @@ public class SpawnManager : MonoBehaviour
     public int enemyCount;
     private int waveNumber = 1;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +34,6 @@ public class SpawnManager : MonoBehaviour
             SpawnEmemyWave(waveNumber);
             SpawnPowerUp();
         }
-
     }
 
     // Spawn a wave of enemies

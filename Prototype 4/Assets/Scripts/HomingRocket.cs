@@ -29,9 +29,6 @@ public class HomingRocket : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
-
     }
 
     // Called by player controller, assigns a new target to the rocket and destroys it when duration is reached
