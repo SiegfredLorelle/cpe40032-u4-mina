@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour
     private float spawnRange = 9.0f;
     public Enemy[] enemiesAlive;
     public int enemyCount;
-    public int waveNumber = 1;
+    private int waveNumber = 1;
 
 
     // Start is called before the first frame update

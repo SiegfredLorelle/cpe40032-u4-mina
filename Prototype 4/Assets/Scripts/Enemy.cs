@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     private GameObject player;
 
     private float lowerBound = -10.0f;
-    public float speed = 3.0f;
+    public float speed;
 
     // Start is called before the first frame update
     void Start()

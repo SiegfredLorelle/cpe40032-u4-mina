@@ -9,8 +9,6 @@ public class HomingRocket : MonoBehaviour
     private float rocketStrength = 50.0f;
     private float rocketDuration = 5.0f;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +23,6 @@ public class HomingRocket : MonoBehaviour
         {
             Vector3 moveDirection = (target.transform.position - transform.position).normalized;
             transform.position += moveDirection * speed * Time.deltaTime;
-
         }
         // If no target then destroy the rocket
         else
@@ -42,7 +39,6 @@ public class HomingRocket : MonoBehaviour
     {
         target = newTarget;
         Destroy(gameObject, rocketDuration);
-
     }
 
     

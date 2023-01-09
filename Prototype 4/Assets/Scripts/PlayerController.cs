@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public GameObject rocketsIndicator;
     public GameObject rocket;
 
-    public float speed = 5.0f;
+    private float speed = 4.0f;
     private Vector3 powerUpIndicatorOffset = new Vector3(0, 0.7f, 0);
     private float lowerBound = -10.0f;
 
@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
         spawnManagerScript = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         playerRb = GetComponent<Rigidbody>();
         focalPoint = GameObject.Find("Focal Point");
-
     }
 
     // Update is called once per frame
@@ -61,10 +60,10 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y < lowerBound)
         {
             Destroy(gameObject);
+            Destroy(knockbackIndicator);
+            Destroy(rocketsIndicator);
             Debug.Log("Game Over!!");
         }
-
-
     }
 
 
