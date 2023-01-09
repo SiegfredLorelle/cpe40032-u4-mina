@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public PlayerController playerControllerScript;
-
     public GameObject[] enemiesPrefab;
     public GameObject[] powerupsPrefab;
-    //public GameObject rocket;
     private float spawnRange = 9.0f;
     public Enemy[] enemiesAlive;
     public int enemyCount;
@@ -18,24 +15,25 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Spawn 1 enemy and 1 powerup in the first wave
         SpawnEmemyWave(waveNumber);
         SpawnPowerUp();
-
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Keep tabs on the enemies alive
         enemiesAlive = FindObjectsOfType<Enemy>();
         enemyCount = enemiesAlive.Length;
 
+        // If no enemies are alive
         if (enemyCount == 0)
         {
+            // Spawn the next wave, with + 1 enemies, and 1 powerup
             waveNumber++;
             SpawnEmemyWave(waveNumber);
             SpawnPowerUp();
-
         }
 
     }
@@ -43,8 +41,10 @@ public class SpawnManager : MonoBehaviour
     // Spawn a wave of enemies
     private void SpawnEmemyWave(int enemiesToSpawn)
     {
+        // Spawn enemies based on the passed arguement
         for (int i = 0; i < enemiesToSpawn; i++)
         {
+            // Randomize the place in which the enemy will spawn, and which type of enemy to spawn
             int randomEnemyIndex = Random.Range(0, enemiesPrefab.Length);
             Instantiate(enemiesPrefab[randomEnemyIndex], GenerateSpawnPosition(), enemiesPrefab[randomEnemyIndex].transform.rotation);
         }
@@ -60,12 +60,12 @@ public class SpawnManager : MonoBehaviour
         return randomPos;
     }
 
+    // Spawn a powerup
     private void SpawnPowerUp()
     {
+        // Randomize the place in which the powerup will spawn, and which type of powerup to spawn
         int randomPowerupIndex = Random.Range(0, powerupsPrefab.Length);
         Instantiate(powerupsPrefab[randomPowerupIndex], GenerateSpawnPosition(), powerupsPrefab[randomPowerupIndex].transform.rotation);
     }
-
-
 }
 
